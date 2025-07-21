@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Payslip</title>
+    <style>
+      :root {
+        --primary-color: #252525;
+        --secondary-color: #ffffff;
+        --accent-color: #f5f5f5;
+        --border-color: #cccccc;
+        --text-primary: #000000;
+        --text-secondary: #666666;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+          "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+        background-color: var(--accent-color);
+        padding: 10px;
+        color: var(--text-primary);
+        font-size: 12px;
+        line-height: 1.4;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .payable-days-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        border: 1px solid var(--border-color);
+        background: var(--secondary-color);
+      }
+
+      .payable-days-table th {
+        background: var(--primary-color);
+        color: var(--secondary-color);
+        padding: 8px 12px;
+        text-align: center;
+        font-weight: 500;
+        font-size: 11px;
+        border-right: 1px solid var(--border-color);
+        letter-spacing: 0.3px;
+      }
+
+      .payable-days-table th:last-child {
+        border-right: none;
+      }
+
+      .payable-days-table td {
+        padding: 8px 12px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--text-primary);
+        font-weight: 400;
+        border-right: 1px solid var(--border-color);
+        background: var(--accent-color);
+      }
+
+      .payable-days-table td:last-child {
+        border-right: none;
+      }
+
+      .payslip-container {
+        width: 210mm;
+        max-width: 210mm;
+        min-height: 297mm;
+        max-height: 297mm;
+        margin: 0 auto;
+        background: var(--secondary-color);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 15mm;
+        box-sizing: border-box;
+      }
+
+      .header {
+        background: var(--primary-color);
+        color: var(--secondary-color);
+        text-align: center;
+        padding: 15px;
+        margin: -15mm -15mm 20px -15mm;
+      }
+
+      .company-name {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 3px;
+        letter-spacing: 0.5px;
+      }
+
+      .company-address {
+        font-size: 14px;
+        opacity: 0.9;
+        font-weight: 400;
+        letter-spacing: 1px;
+        width: 89%;
+        margin: 0 auto;
+      }
+
+      .payslip-title {
+        font-size: 14px;
+        opacity: 0.9;
+        font-weight: 400;
+        letter-spacing: 1px;
+        margin-top: 5px;
+      }
+
+      .pay-period {
+        background: var(--accent-color);
+        padding: 12px 15px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .pay-period-info {
+        font-weight: 500;
+        color: var(--text-primary);
+        font-size: 11px;
+      }
+
+      .content {
+        padding: 0;
+      }
+
+      .section {
+        margin-bottom: 20px;
+      }
+
+      .salary-section{
+        margin-bottom: 10px;
+      }
+
+      .section-title {
+        background: var(--primary-color);
+        color: var(--secondary-color);
+        padding: 8px 15px;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        letter-spacing: 0.3px;
+      }
+
+      .employee-details {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px 15px;
+        margin-bottom: 15px;
+      }
+
+      .field-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .field-label {
+        font-weight: 500;
+        font-size: 9px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        margin-bottom: 3px;
+        letter-spacing: 0.3px;
+      }
+
+      .field-value {
+        font-size: 11px;
+        color: var(--text-primary);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 3px;
+        min-height: 16px;
+        font-weight: 400;
+      }
+
+      .salary-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        border: 1px solid var(--border-color);
+      }
+
+      .salary-table th {
+        background: var(--primary-color);
+        color: var(--secondary-color);
+        padding: 8px 10px;
+        text-align: left;
+        font-weight: 500;
+        font-size: 11px;
+        border-bottom: 1px solid var(--border-color);
+        letter-spacing: 0.3px;
+      }
+
+      .salary-table td {
+        padding: 6px 10px;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 11px;
+        color: var(--text-primary);
+        font-weight: 400;
+      }
+
+      .salary-table tr:nth-child(even) {
+        background-color: var(--accent-color);
+      }
+
+      .earnings-row {
+        background-color: var(--accent-color);
+      }
+
+      .deductions-row {
+        background-color: var(--accent-color);
+      }
+
+      .total-row {
+        background-color: var(--accent-color);
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      .net-pay {
+        background: var(--primary-color);
+        color: var(--secondary-color);
+        text-align: center;
+        padding: 12px;
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+
+      .footer {
+        background: var(--accent-color);
+        padding: 12px;
+        text-align: center;
+        color: var(--text-primary);
+        font-size: 10px;
+        border: 1px solid var(--border-color);
+        margin-top: 10px;
+        font-weight: 400;
+      }
+
+      @media print {
+        body {
+          background: var(--secondary-color);
+          padding: 0;
+        }
+
+        .payslip-container {
+          box-shadow: none;
+          width: 210mm;
+          height: 297mm;
+          padding: 15mm;
+          margin: 0;
+        }
+
+        @page {
+          size: A4;
+          margin: 0;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .payslip-container {
+          width: 100%;
+          min-height: auto;
+          max-height: none;
+          padding: 15px;
+        }
+
+        .employee-details {
+          grid-template-columns: 1fr;
+        }
+
+        .pay-period {
+          flex-direction: column;
+          gap: 8px;
+          text-align: center;
+        }
+
+        .salary-table {
+          font-size: 10px;
+        }
+
+        .salary-table th,
+        .salary-table td {
+          padding: 5px;
+        }
+
+        .header {
+          margin: -15px -15px 15px -15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="payslip-container">
+      <!-- Header Section -->
+      <div class="header">
+        <div class="company-name">{{COMPANY_NAME}}</div>
+        <div class="company-address">{{COMPANY_ADDRESS}}</div>
+        <div class="payslip-title"></div>
+      </div>
+
+      <!-- Pay Period Section -->
+      <div class="pay-period">
+        <div class="pay-period-info">
+          <strong>Pay Period:</strong> {{PAY_PERIOD_START}} to
+          {{PAY_PERIOD_END}}
+        </div>
+        <div class="pay-period-info">
+          <strong>Pay Date:</strong> {{PAY_DATE}}
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <!-- Employee Details Section -->
+        <div class="section">
+          <div class="section-title">Employee Information</div>
+          <div class="employee-details">
+            <div class="field-group">
+              <div class="field-label">Employee Name</div>
+              <div class="field-value">{{EMPLOYEE_NAME}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Employee Number</div>
+              <div class="field-value">{{EMPLOYEE_NUMBER}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Date of Joining</div>
+              <div class="field-value">{{DATE_OF_JOINING}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Department</div>
+              <div class="field-value">{{DEPARTMENT}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Sub-Department</div>
+              <div class="field-value">{{SUB_DEPARTMENT}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Designation</div>
+              <div class="field-value">{{DESIGNATION}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Payment Mode</div>
+              <div class="field-value">{{PAYMENT_MODE}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Bank Name</div>
+              <div class="field-value">{{BANK_NAME}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Bank IFSC Code</div>
+              <div class="field-value">{{BANK_IFSC}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Bank Account Number</div>
+              <div class="field-value">{{BANK_ACCOUNT_NUMBER}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">UAN Number</div>
+              <div class="field-value">{{UAN_NUMBER}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">PF Number</div>
+              <div class="field-value">{{PF_NUMBER}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">ESI Number</div>
+              <div class="field-value">{{ESI_NUMBER}}</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">PAN Number</div>
+              <div class="field-value">{{PAN_NUMBER}}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Salary Details Section -->
+        <div class="section salary-section">
+          <!-- Payable Days Section -->
+          <div class="section">
+            <div class="section-title">Attendance Details</div>
+            <table class="payable-days-table">
+              <thead>
+                <tr>
+                  <th>Actual Payable Days</th>
+                  <th>Total Working Days</th>
+                  <th>Loss Of Pay Days</th>
+                  <th>Days Payable</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ACTUAL_PAYABLE_DAYS}}</td>
+                  <td>{{TOTAL_WORKING_DAYS}}</td>
+                  <td>{{LOSS_OF_PAY_DAYS}}</td>
+                  <td>{{DAYS_PAYABLE}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="section-title">Salary Breakdown</div>
+          <table class="salary-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th style="text-align: right">Earnings (₹)</th>
+                <th style="text-align: right">Deductions (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Earnings -->
+              <tr class="earnings-row">
+                <td><strong>Basic Salary</strong></td>
+                <td style="text-align: right">{{BASIC_SALARY}}</td>
+                <td style="text-align: right">-</td>
+              </tr>
+              <tr class="earnings-row">
+                <td><strong>HRA (House Rent Allowance)</strong></td>
+                <td style="text-align: right">{{HRA}}</td>
+                <td style="text-align: right">-</td>
+              </tr>
+              <tr class="earnings-row">
+                <td><strong>Conveyance Allowance</strong></td>
+                <td style="text-align: right">{{CONVEYANCE_ALLOWANCE}}</td>
+                <td style="text-align: right">-</td>
+              </tr>
+              <tr class="earnings-row">
+                <td><strong>Shift Allowance (SA)</strong></td>
+                <td style="text-align: right">{{SHIFT_ALLOWANCE}}</td>
+                <td style="text-align: right">-</td>
+              </tr>
+              <tr class="earnings-row">
+                <td><strong>Bonus Allowance</strong></td>
+                <td style="text-align: right">{{BONUS_ALLOWANCE}}</td>
+                <td style="text-align: right">-</td>
+              </tr>
+              <tr class="earnings-row">
+                <td><strong>Special Allowance</strong></td>
+                <td style="text-align: right">{{SPECIAL_ALLOWANCE}}</td>
+                <td style="text-align: right">-</td>
+              </tr>
+              <tr class="earnings-row">
+                <td><strong>Other Earnings</strong></td>
+                <td style="text-align: right">{{OTHER_EARNINGS}}</td>
+                <td style="text-align: right">-</td>
+              </tr>
+
+              <!-- Deductions -->
+              <tr class="deductions-row">
+                <td><strong>Provident Fund (PF)</strong></td>
+                <td style="text-align: right">-</td>
+                <td style="text-align: right">{{PF_DEDUCTION}}</td>
+              </tr>
+              <tr class="deductions-row">
+                <td><strong>ESI (Employee State Insurance)</strong></td>
+                <td style="text-align: right">-</td>
+                <td style="text-align: right">{{ESI_DEDUCTION}}</td>
+              </tr>
+
+              <!-- Totals -->
+              <tr class="total-row">
+                <td><strong>GROSS SALARY</strong></td>
+                <td style="text-align: right">{{GROSS_SALARY}}</td>
+                <td style="text-align: right">-</td>
+              </tr>
+              <tr class="total-row">
+                <td><strong>TOTAL DEDUCTIONS</strong></td>
+                <td style="text-align: right">-</td>
+                <td style="text-align: right">{{TOTAL_DEDUCTIONS}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Net Pay Section -->
+        <div class="net-pay">
+          <div>NET PAY: ₹{{NET_PAY}}</div>
+          <div style="font-size: 11px; margin-top: 3px; opacity: 0.9">
+            (In Words: {{NET_PAY_IN_WORDS}})
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>
+          This is a computer generated payslip and does not require signature.
+        </p>
+        <p>For any queries, please contact HR Department.</p>
+      </div>
+    </div>
+  </body>
+</html>
