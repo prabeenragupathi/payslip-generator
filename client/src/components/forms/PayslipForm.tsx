@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import{ useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -138,7 +138,7 @@ const PayslipForm = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, setFieldValue }: any) => (
+          {({ values, errors, touched }: any) => (
             <Form>
               {/* Company Details */}
               <div className="mb-8">
@@ -629,7 +629,7 @@ const PayslipForm = () => {
                         name="contributions.pf"
                         type="number"
                         className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
-                        onWheel={(e) => e.currentTarget.blur()}
+                        onWheel={(e:any) => e.currentTarget?.blur()}
                         onKeyDown={handleKeyDown}
                       />
                     </div>
@@ -643,7 +643,7 @@ const PayslipForm = () => {
                         name="contributions.esi"
                         type="number"
                         className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
-                        onWheel={(e) => e.currentTarget.blur()}
+                        onWheel={(e:any) => e.currentTarget.blur()}
                         onKeyDown={handleKeyDown}
                       />
                     </div>
@@ -668,7 +668,7 @@ const PayslipForm = () => {
                         name="attendance.actualDays"
                         type="number"
                         className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
-                        onWheel={(e) => e.currentTarget.blur()}
+                        onWheel={(e:any) => e.currentTarget.blur()}
                         onKeyDown={handleKeyDown}
                       />
                       {errors.attendance?.actualDays &&
@@ -688,7 +688,7 @@ const PayslipForm = () => {
                         name="attendance.totalWorkingDays"
                         type="number"
                         className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
-                        onWheel={(e) => e.currentTarget.blur()}
+                        onWheel={(e:any) => e.currentTarget.blur()}
                         onKeyDown={handleKeyDown}
                       />
                       {errors.attendance?.totalWorkingDays &&
@@ -708,7 +708,7 @@ const PayslipForm = () => {
                         name="attendance.lossOfPay"
                         type="number"
                         className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
-                        onWheel={(e) => e.currentTarget.blur()}
+                        onWheel={(e:any) => e.currentTarget.blur()}
                         onKeyDown={handleKeyDown}
                       />
                       {errors.attendance?.lossOfPay &&
@@ -728,7 +728,7 @@ const PayslipForm = () => {
                         name="attendance.daysPayable"
                         type="number"
                         className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
-                        onWheel={(e) => e.currentTarget.blur()}
+                        onWheel={(e:any) => e.currentTarget.blur()}
                         onKeyDown={handleKeyDown}
                       />
                       {errors.attendance?.daysPayable &&
