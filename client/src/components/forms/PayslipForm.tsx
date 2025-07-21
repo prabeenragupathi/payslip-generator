@@ -121,7 +121,7 @@ const PayslipForm = () => {
     }
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: any) => {
     if (e.keyCode === 38 || e.keyCode === 40) {
       e.preventDefault();
     }
